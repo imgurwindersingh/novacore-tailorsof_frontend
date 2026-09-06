@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import { format } from "date-fns";
 import type { Metadata } from "next";
 import { Scissors } from "lucide-react";
+import { PublicRefreshButton } from "@/components/clients/public-refresh-button";
 import {
   GENERAL_MEASUREMENT_LABELS,
   ORDER_STATUS_LABELS,
@@ -273,11 +274,14 @@ export default async function PublicProfilePage({
     <div className="min-h-screen bg-muted/40">
       {/* Header */}
       <header className="border-b bg-background/80 backdrop-blur-sm">
-        <div className="mx-auto flex max-w-3xl items-center gap-3 px-4 py-4">
-          <div className="flex size-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
-            <Scissors className="size-4" />
+        <div className="mx-auto flex max-w-3xl items-center justify-between gap-3 px-4 py-4">
+          <div className="flex items-center gap-3">
+            <div className="flex size-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
+              <Scissors className="size-4" />
+            </div>
+            <span className="font-semibold">Unique Tailors</span>
           </div>
-          <span className="font-semibold">Unique Tailors</span>
+          <PublicRefreshButton />
         </div>
       </header>
 
