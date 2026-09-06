@@ -99,6 +99,12 @@ export function AddClientWizard() {
             setServerError(result.error);
             toast.error(result.error || "Failed to save client");
             setIsSubmitting(false);
+            // If it's a duplicate mobile error, jump back to the profile step
+            // and set the field error so the user knows exactly what to fix.
+            if (result.error?.toLowerCase().includes("mobile")) {
+              form.setError("profile.mobile", { message: result.error });
+              setStep(0);
+            }
             window.scrollTo({ top: 0, behavior: "smooth" });
             return;
           }
