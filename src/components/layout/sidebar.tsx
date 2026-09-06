@@ -89,7 +89,9 @@ function Brand() {
         className="shrink-0 object-contain"
         priority
       />
-      <span className="text-lg font-semibold tracking-tight text-sidebar-foreground">Unique Tailors</span>
+      <span className="min-w-0 truncate text-lg font-semibold tracking-tight">
+        Unique Tailors
+      </span>
     </div>
   );
 }
