@@ -6,6 +6,7 @@ import { MeasurementsCard } from "@/components/clients/measurements-card";
 import { OrdersList } from "@/components/clients/orders-list";
 import { PaymentsList } from "@/components/clients/payments-list";
 import { ProfileCard } from "@/components/clients/profile-card";
+import { ShareProfileButton } from "@/components/clients/share-profile-button";
 import { PageHeader } from "@/components/layout/page-header";
 import { buttonVariants } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -34,6 +35,7 @@ export default async function ClientDetailPage({
         description={`Client since ${format(new Date(client.createdAt), "dd MMM yyyy")} · ${client.mobile}`}
         actions={
           <>
+            <ShareProfileButton clientId={client.id} />
             <Link href={`/clients/${client.id}/edit`} className={buttonVariants({ variant: "outline" })}>
               Edit
             </Link>

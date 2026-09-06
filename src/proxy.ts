@@ -2,10 +2,16 @@ import { NextResponse, type NextRequest } from "next/server";
 import { verifyToken } from "@/lib/session";
 import { SESSION_COOKIE } from "@/lib/constants";
 
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
+  const { pathname } = request.nextUrl;
+
+  // Public share profile pages — always allow, no auth check
+  if (pathname.startsWith("/p/")) {
+    return NextResponse.next();
+  }
+
   const token = request.cookies.get(SESSION_COOKIE)?.value;
   const user = token ? await verifyToken(token) : null;
-  const { pathname } = request.nextUrl;
 
   // Unauthenticated: allow login page, redirect everything else
   if (!user) {

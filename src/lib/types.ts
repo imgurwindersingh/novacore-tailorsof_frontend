@@ -177,3 +177,51 @@ export interface RecordPaymentInput {
   method: PaymentMethod;
   note: string;
 }
+
+/** Read-only client profile returned by the unauthenticated public endpoint. */
+export interface PublicOrderDetail {
+  id: string;
+  orderNumber: string;
+  status: OrderStatus;
+  paymentStatus: PaymentStatus;
+  totalPaise: number;
+  paidPaise: number;
+  duePaise: number;
+  expectedDelivery: string | null;
+  notes: string | null;
+  createdAt: string;
+  items: {
+    id: string;
+    garmentType: string;
+    description: string | null;
+    quantity: number;
+    unitPricePaise: number;
+  }[];
+}
+
+export interface PublicClientProfile {
+  id: string;
+  fullName: string;
+  createdAt: string;
+  generalMeasurement: { unit: Unit; height: number | null } | null;
+  shirtMeasurement: {
+    unit: Unit;
+    chest: number | null;
+    waist: number | null;
+    shoulderWidth: number | null;
+    sleeveLength: number | null;
+    shirtLength: number | null;
+    neck: number | null;
+    cuff: number | null;
+  } | null;
+  pantMeasurement: {
+    unit: Unit;
+    waist: number | null;
+    hip: number | null;
+    thigh: number | null;
+    knee: number | null;
+    bottomOpening: number | null;
+    inseam: number | null;
+  } | null;
+  orders: PublicOrderDetail[];
+}

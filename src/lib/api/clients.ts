@@ -2,6 +2,7 @@ import type {
   ClientDetail,
   ClientListResult,
   CreateClientInput,
+  PublicClientProfile,
   UpdateClientInput,
 } from "../types";
 import { apiFetch } from "./client";
@@ -50,5 +51,12 @@ export async function deleteClientRequest(
 ): Promise<{ clientId: string }> {
   return apiFetch<{ clientId: string }>(`/api/clients/${id}`, {
     method: "DELETE",
+  });
+}
+
+/** GET /api/public/clients/:id — no auth required */
+export async function getPublicClientRequest(id: string): Promise<PublicClientProfile> {
+  return apiFetch<PublicClientProfile>(`/api/public/clients/${id}`, {
+    unauthenticated: true,
   });
 }
