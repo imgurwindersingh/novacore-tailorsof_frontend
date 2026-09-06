@@ -2,7 +2,8 @@ import type { SessionUser } from "../types";
 import { apiFetch } from "./client";
 
 export interface LoginResponse {
-  token: string;
+  accessToken: string;
+  refreshToken: string;
   user: SessionUser;
 }
 
@@ -14,6 +15,33 @@ export async function loginRequest(
   return apiFetch<LoginResponse>("/api/auth/login", {
     method: "POST",
     body: { email, password },
+    unauthenticated: true,
+  });
+}
+
+/**
+ * POST /api/auth/refresh
+ * Exchanges an existing refresh token for a new access + refresh token pair.
+ * The old refresh token is invalidated on the backend (rotation).
+ */
+export async function refreshTokenRequest(
+  refreshToken: string
+): Promise<LoginResponse> {
+  return apiFetch<LoginResponse>("/api/auth/refresh", {
+    method: "POST",
+    body: { refreshToken },
+    unauthenticated: true,
+  });
+}
+
+/**
+ * POST /api/auth/logout
+ * Invalidates the refresh token on the backend.
+ */
+export async function logoutRequest(refreshToken: string): Promise<void> {
+  await apiFetch<{ ok: true }>("/api/auth/logout", {
+    method: "POST",
+    body: { refreshToken },
     unauthenticated: true,
   });
 }

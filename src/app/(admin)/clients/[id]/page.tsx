@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { format } from "date-fns";
 import { DeleteClientDialog } from "@/components/clients/delete-client-dialog";
 import { MeasurementsCard } from "@/components/clients/measurements-card";
+import { NewOrderDialog } from "@/components/clients/new-order-dialog";
 import { OrdersList } from "@/components/clients/orders-list";
 import { PaymentsList } from "@/components/clients/payments-list";
 import { ProfileCard } from "@/components/clients/profile-card";
@@ -36,6 +37,7 @@ export default async function ClientDetailPage({
         actions={
           <>
             <ShareProfileButton clientId={client.id} />
+            <NewOrderDialog clientId={client.id} clientName={client.fullName} />
             <Link href={`/clients/${client.id}/edit`} className={buttonVariants({ variant: "outline" })}>
               Edit
             </Link>

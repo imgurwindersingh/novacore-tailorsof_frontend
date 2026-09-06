@@ -41,7 +41,13 @@ export const GARMENT_TYPES = [
 export const PAGE_SIZE = 10;
 
 export const SESSION_COOKIE = "ts_session";
-export const SESSION_MAX_AGE_SECONDS = 60 * 60 * 24 * 7; // 7 days
+export const REFRESH_TOKEN_COOKIE = "ts_refresh";
+
+/** Access token lifetime — must match the backend (2 days). */
+export const SESSION_MAX_AGE_SECONDS = 60 * 60 * 24 * 2;
+
+/** Refresh token lifetime — must match the backend (7 days). */
+export const REFRESH_TOKEN_MAX_AGE_SECONDS = 60 * 60 * 24 * 7;
 
 export const SHIRT_MEASUREMENT_LABELS: Record<string, string> = {
   chest: "Chest",

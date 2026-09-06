@@ -32,6 +32,14 @@ export default async function DashboardPage() {
     stats = fetchedStats;
     deliveries = fetchedDeliveries;
   } catch (err) {
+    // NEXT_REDIRECT is thrown by redirect() — must re-throw so Next.js can
+    // handle the navigation. Catching it would swallow the redirect entirely.
+    if (
+      err instanceof Error &&
+      (err as { digest?: string }).digest?.startsWith("NEXT_REDIRECT")
+    ) {
+      throw err;
+    }
     console.error("Failed to load dashboard data from backend:", err);
     errorMsg =
       err instanceof Error

@@ -225,3 +225,16 @@ export interface PublicClientProfile {
   } | null;
   orders: PublicOrderDetail[];
 }
+
+/** Matches the wizardOrderSchema shape sent to POST /api/clients/:clientId/orders */
+export interface WizardOrderInput {
+  items: {
+    garmentType: string;
+    description: string;
+    quantity: number;
+    unitPrice: number;
+  }[];
+  expectedDelivery: string;
+  advance: number;
+  paymentMethod: PaymentMethod | "";
+}

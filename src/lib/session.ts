@@ -8,7 +8,12 @@
  */
 import { decodeJwt, jwtVerify } from "jose";
 import { cookies } from "next/headers";
-import { SESSION_COOKIE, SESSION_MAX_AGE_SECONDS } from "./constants";
+import {
+  SESSION_COOKIE,
+  SESSION_MAX_AGE_SECONDS,
+  REFRESH_TOKEN_COOKIE,
+  REFRESH_TOKEN_MAX_AGE_SECONDS,
+} from "./constants";
 import type { Role, SessionUser } from "./types";
 
 function secretKey(): Uint8Array | null {
@@ -25,22 +30,39 @@ export async function getSession(): Promise<SessionUser | null> {
   return verifyToken(token);
 }
 
-/** Save the JWT (received from the backend login response) as an httpOnly cookie. */
-export async function saveSession(token: string): Promise<void> {
+/** Save the access token and refresh token as httpOnly cookies. */
+export async function saveSession(
+  accessToken: string,
+  refreshToken: string
+): Promise<void> {
   const store = await cookies();
-  store.set(SESSION_COOKIE, token, {
+  store.set(SESSION_COOKIE, accessToken, {
     httpOnly: true,
     sameSite: "lax",
     path: "/",
     maxAge: SESSION_MAX_AGE_SECONDS,
     secure: process.env.NODE_ENV === "production",
   });
+  store.set(REFRESH_TOKEN_COOKIE, refreshToken, {
+    httpOnly: true,
+    sameSite: "lax",
+    path: "/",
+    maxAge: REFRESH_TOKEN_MAX_AGE_SECONDS,
+    secure: process.env.NODE_ENV === "production",
+  });
 }
 
-/** Clear the session cookie. */
+/** Clear both the session and refresh token cookies. */
 export async function clearSession(): Promise<void> {
   const store = await cookies();
   store.delete(SESSION_COOKIE);
+  store.delete(REFRESH_TOKEN_COOKIE);
+}
+
+/** Read the refresh token cookie, or null if absent. */
+export async function getRefreshToken(): Promise<string | null> {
+  const store = await cookies();
+  return store.get(REFRESH_TOKEN_COOKIE)?.value ?? null;
 }
 
 /**

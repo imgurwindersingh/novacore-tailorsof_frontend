@@ -4,6 +4,7 @@ import type {
   CreateClientInput,
   PublicClientProfile,
   UpdateClientInput,
+  WizardOrderInput,
 } from "../types";
 import { apiFetch } from "./client";
 
@@ -52,6 +53,17 @@ export async function deleteClientRequest(
   return apiFetch<{ clientId: string }>(`/api/clients/${id}`, {
     method: "DELETE",
   });
+}
+
+/** POST /api/clients/:clientId/orders — add a new order to an existing client */
+export async function createOrderForClientRequest(
+  clientId: string,
+  input: WizardOrderInput
+): Promise<{ orderId: string; orderNumber: string; clientId: string }> {
+  return apiFetch<{ orderId: string; orderNumber: string; clientId: string }>(
+    `/api/clients/${clientId}/orders`,
+    { method: "POST", body: input }
+  );
 }
 
 /** GET /api/public/clients/:id — no auth required */

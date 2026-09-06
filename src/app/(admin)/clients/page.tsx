@@ -35,6 +35,13 @@ export default async function ClientsPage({
   try {
     result = await listClientsRequest({ q, page });
   } catch (err) {
+    // NEXT_REDIRECT must be re-thrown — catching it would swallow the redirect.
+    if (
+      err instanceof Error &&
+      (err as { digest?: string }).digest?.startsWith("NEXT_REDIRECT")
+    ) {
+      throw err;
+    }
     console.error("Failed to load clients list from backend:", err);
     errorMsg =
       err instanceof Error

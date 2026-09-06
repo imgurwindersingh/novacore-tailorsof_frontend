@@ -1,8 +1,8 @@
 "use server";
 
 import { redirect } from "next/navigation";
-import { loginRequest } from "@/lib/api/auth";
-import { saveSession, clearSession } from "@/lib/session";
+import { loginRequest, logoutRequest } from "@/lib/api/auth";
+import { saveSession, clearSession, getRefreshToken } from "@/lib/session";
 import { ApiError } from "@/lib/api/client";
 
 export type ActionResult = { ok: true } | { ok: false; error: string };
@@ -18,8 +18,8 @@ export async function doLogin(
   if (!password) return { ok: false, error: "Password is required" };
 
   try {
-    const { token } = await loginRequest(email, password);
-    await saveSession(token);
+    const { accessToken, refreshToken } = await loginRequest(email, password);
+    await saveSession(accessToken, refreshToken);
   } catch (e) {
     if (e instanceof ApiError) {
       return { ok: false, error: e.message };
@@ -31,6 +31,16 @@ export async function doLogin(
 }
 
 export async function doLogout(): Promise<void> {
+  // Tell the backend to invalidate the refresh token (fire-and-forget).
+  try {
+    const refreshToken = await getRefreshToken();
+    if (refreshToken) {
+      await logoutRequest(refreshToken);
+    }
+  } catch {
+    // Ignore — we always clear local cookies regardless of backend response.
+  }
+
   await clearSession();
   redirect("/login");
 }

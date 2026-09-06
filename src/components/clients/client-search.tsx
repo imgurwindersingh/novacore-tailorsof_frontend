@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Search } from "lucide-react";
 import { useDebounce } from "@/hooks/use-debounce";
@@ -9,6 +9,9 @@ import { Input } from "@/components/ui/input";
 
 export function ClientSearch({ initialQuery }: { initialQuery: string }) {
   const router = useRouter();
+  const routerRef = useRef(router);
+  routerRef.current = router;
+
   const [value, setValue] = useState(initialQuery);
   const debounced = useDebounce(value, 300);
 
@@ -16,8 +19,13 @@ export function ClientSearch({ initialQuery }: { initialQuery: string }) {
     if (debounced === initialQuery) return;
     const params = new URLSearchParams();
     if (debounced) params.set("q", debounced);
-    router.push(params.toString() ? `/clients?${params.toString()}` : "/clients");
-  }, [debounced, initialQuery, router]);
+    routerRef.current.push(
+      params.toString() ? `/clients?${params.toString()}` : "/clients"
+    );
+    // intentionally omit routerRef — it's a stable ref wrapper
+    // intentionally omit initialQuery — we only want to react to debounced changes
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [debounced]);
 
   return (
     <Card>
