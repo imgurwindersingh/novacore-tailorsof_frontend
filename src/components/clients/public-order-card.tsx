@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { format } from "date-fns";
-import { ChevronDown, ChevronUp, ExternalLink } from "lucide-react";
+import { ChevronDown, ChevronUp } from "lucide-react";
 import {
   ORDER_STATUS_LABELS,
   PAYMENT_STATUS_LABELS,
@@ -70,7 +70,6 @@ function OrderDetail({ order }: { order: PublicOrderDetail }) {
           <thead>
             <tr className="border-b bg-muted/40 text-left">
               <th className="px-4 py-2 font-medium text-muted-foreground">Garment</th>
-              <th className="hidden px-4 py-2 font-medium text-muted-foreground md:table-cell">Design</th>
               <th className="hidden px-4 py-2 font-medium text-muted-foreground sm:table-cell">
                 Notes
               </th>
@@ -85,22 +84,6 @@ function OrderDetail({ order }: { order: PublicOrderDetail }) {
             {order.items.map((item) => (
               <tr key={item.id} className="border-b last:border-0">
                 <td className="px-4 py-2 font-medium">{item.garmentType}</td>
-                <td className="hidden px-4 py-2 md:table-cell">
-                  {item.designImageUrl || item.designReferenceUrl ? (
-                    <div className="flex items-center gap-2">
-                      {item.designImageUrl ? (
-                        <a href={item.designImageUrl} target="_blank" rel="noreferrer" aria-label={`View ${item.garmentType} design image`}>
-                          <img src={item.designImageUrl} alt={`${item.garmentType} design reference`} className="size-9 rounded object-cover ring-1 ring-border" />
-                        </a>
-                      ) : null}
-                      {item.designReferenceUrl ? (
-                        <a href={item.designReferenceUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 text-xs font-medium text-primary hover:underline">
-                          Link <ExternalLink className="size-3" />
-                        </a>
-                      ) : null}
-                    </div>
-                  ) : <span className="text-muted-foreground">—</span>}
-                </td>
                 <td className="hidden px-4 py-2 text-muted-foreground sm:table-cell">
                   {item.description || "—"}
                 </td>

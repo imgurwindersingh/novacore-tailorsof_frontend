@@ -36,8 +36,6 @@ export const measurementsSchema = z.object({
 export const orderItemSchema = z.object({
   garmentType: z.string().trim().min(1, "Garment type is required").max(50, "Max 50 characters"),
   description: z.string().trim().max(200, "Max 200 characters"),
-  designImageUrl: z.union([z.url("Enter a valid image URL"), z.literal("")]),
-  designReferenceUrl: z.union([z.url("Enter a valid reference link"), z.literal("")]),
   quantity: z.number().int("Whole numbers only").min(1, "At least 1").max(999, "Max 999"),
   unitPrice: z.number().positive("Enter a price greater than 0").max(10000000, "Too large"),
 });

@@ -73,7 +73,7 @@ export function StepOrdersPayment({ form }: { form: AnyForm }) {
             variant="outline"
             size="sm"
             onClick={() =>
-              append({ garmentType: "", description: "", designImageUrl: "", designReferenceUrl: "", quantity: 1, unitPrice: 0 })
+              append({ garmentType: "", description: "", quantity: 1, unitPrice: 0 })
             }
           >
             <Plus className="size-4" /> Add item
@@ -132,20 +132,6 @@ export function StepOrdersPayment({ form }: { form: AnyForm }) {
                 >
                   <Trash2 className="size-4 text-muted-foreground" />
                 </Button>
-              </div>
-              <div className="grid gap-2 pt-1 sm:grid-cols-2">
-                <Input
-                  type="url"
-                  placeholder="Design image URL (optional)"
-                  aria-label={`Item ${index + 1} design image URL`}
-                  {...form.register(`order.items.${index}.designImageUrl`)}
-                />
-                <Input
-                  type="url"
-                  placeholder="Design reference link (optional)"
-                  aria-label={`Item ${index + 1} design reference link`}
-                  {...form.register(`order.items.${index}.designReferenceUrl`)}
-                />
               </div>
               {itemError(index) ? (
                 <p className="text-xs text-destructive">{itemError(index)}</p>

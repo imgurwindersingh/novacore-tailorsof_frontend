@@ -62,7 +62,7 @@ export function AddClientWizard() {
         },
       },
       order: {
-        items: [{ garmentType: "", description: "", designImageUrl: "", designReferenceUrl: "", quantity: 1, unitPrice: 0 }],
+        items: [{ garmentType: "", description: "", quantity: 1, unitPrice: 0 }],
         expectedDelivery: "",
         advance: 0,
         paymentMethod: "",

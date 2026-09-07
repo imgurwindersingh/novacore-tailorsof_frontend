@@ -40,8 +40,6 @@ import { DefaultGarmentRates, useDefaultGarmentRates } from "@/components/wizard
 const itemSchema = z.object({
   garmentType: z.string().min(1, "Select a garment type"),
   description: z.string(),
-  designImageUrl: z.union([z.url("Enter a valid image URL"), z.literal("")]),
-  designReferenceUrl: z.union([z.url("Enter a valid reference link"), z.literal("")]),
   quantity: z.number({ error: "Enter a quantity" }).int().min(1, "Min 1"),
   unitPrice: z.number({ error: "Enter a price" }).positive("Must be > 0"),
 });
@@ -65,14 +63,7 @@ const newOrderSchema = z
 
 type NewOrderValues = z.infer<typeof newOrderSchema>;
 
-const DEFAULT_ITEM = {
-  garmentType: "",
-  description: "",
-  designImageUrl: "",
-  designReferenceUrl: "",
-  quantity: 1,
-  unitPrice: 0,
-};
+const DEFAULT_ITEM = { garmentType: "", description: "", quantity: 1, unitPrice: 0 };
 
 // ── Component ─────────────────────────────────────────────────────────────────
 
@@ -250,20 +241,6 @@ export function NewOrderDialog({
                     >
                       <Trash2 className="size-4 text-muted-foreground" />
                     </Button>
-                  </div>
-                  <div className="grid gap-2 pt-1 sm:grid-cols-2">
-                    <Input
-                      type="url"
-                      placeholder="Design image URL (optional)"
-                      aria-label={`Item ${index + 1} design image URL`}
-                      {...form.register(`items.${index}.designImageUrl`)}
-                    />
-                    <Input
-                      type="url"
-                      placeholder="Design reference link (optional)"
-                      aria-label={`Item ${index + 1} design reference link`}
-                      {...form.register(`items.${index}.designReferenceUrl`)}
-                    />
                   </div>
                   {itemError(index) ? (
                     <p className="text-xs text-destructive">{itemError(index)}</p>
