@@ -33,6 +33,7 @@ import {
 } from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
 import { GarmentCombobox } from "@/components/wizard/garment-combobox";
+import { DefaultGarmentRates, useDefaultGarmentRates } from "@/components/wizard/default-garment-rates";
 
 // ── Zod schema ────────────────────────────────────────────────────────────────
 
@@ -75,6 +76,7 @@ export function NewOrderDialog({
 }) {
   const router = useRouter();
   const [open, setOpen] = useState(false);
+  const { rates, saveRates } = useDefaultGarmentRates();
 
   const form = useForm<NewOrderValues>({
     resolver: zodResolver(newOrderSchema),
@@ -166,7 +168,10 @@ export function NewOrderDialog({
           {/* ── Items ────────────────────────────────────────────────────── */}
           <div className="space-y-3">
             <div className="flex items-center justify-between">
-              <Label>Order items</Label>
+              <div className="flex items-center gap-2">
+                <Label>Order items</Label>
+                <DefaultGarmentRates rates={rates} onSave={saveRates} />
+              </div>
               <Button
                 type="button"
                 variant="outline"
@@ -192,12 +197,18 @@ export function NewOrderDialog({
                     <GarmentCombobox
                       value={String(form.watch(`items.${index}.garmentType`) ?? "")}
                       ariaInvalid={Boolean(itemErrors?.[index]?.garmentType)}
-                      onChange={(value) =>
+                      onChange={(value) => {
                         form.setValue(`items.${index}.garmentType`, value, {
                           shouldValidate: true,
                           shouldDirty: true,
-                        })
-                      }
+                        });
+                        if (rates[value] !== undefined) {
+                          form.setValue(`items.${index}.unitPrice`, rates[value], {
+                            shouldValidate: true,
+                            shouldDirty: true,
+                          });
+                        }
+                      }}
                     />
                     <Input
                       type="number"

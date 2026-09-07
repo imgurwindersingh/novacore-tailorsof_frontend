@@ -18,11 +18,13 @@ import {
 } from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
 import { GarmentCombobox } from "./garment-combobox";
+import { DefaultGarmentRates, useDefaultGarmentRates } from "./default-garment-rates";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type AnyForm = UseFormReturn<any>;
 
 export function StepOrdersPayment({ form }: { form: AnyForm }) {
+  const { rates, saveRates } = useDefaultGarmentRates();
   const { fields, append, remove } = useFieldArray({
     control: form.control,
     name: "order.items",
@@ -62,7 +64,10 @@ export function StepOrdersPayment({ form }: { form: AnyForm }) {
     <div className="space-y-6">
       <div className="space-y-3">
         <div className="flex items-center justify-between">
-          <Label>Order items</Label>
+          <div className="flex items-center gap-2">
+            <Label>Order items</Label>
+            <DefaultGarmentRates rates={rates} onSave={saveRates} />
+          </div>
           <Button
             type="button"
             variant="outline"
@@ -87,12 +92,18 @@ export function StepOrdersPayment({ form }: { form: AnyForm }) {
                 <GarmentCombobox
                   value={String(form.watch(`order.items.${index}.garmentType`) ?? "")}
                   ariaInvalid={Boolean(itemErrors?.[index]?.garmentType)}
-                  onChange={(value) =>
+                  onChange={(value) => {
                     form.setValue(`order.items.${index}.garmentType`, value, {
                       shouldValidate: true,
                       shouldDirty: true,
-                    })
-                  }
+                    });
+                    if (rates[value] !== undefined) {
+                      form.setValue(`order.items.${index}.unitPrice`, rates[value], {
+                        shouldValidate: true,
+                        shouldDirty: true,
+                      });
+                    }
+                  }}
                 />
                 <Input
                   type="number"

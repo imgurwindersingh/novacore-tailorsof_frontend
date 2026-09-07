@@ -34,7 +34,6 @@ export const GARMENT_TYPES = [
   "Sherwani",
   "Blazer",
   "Suit",
-  "Blouse",
   "Other",
 ];
 
