@@ -46,6 +46,8 @@ export interface OrderDetail {
     id: string;
     garmentType: string;
     description: string | null;
+    designImageUrl?: string | null;
+    designReferenceUrl?: string | null;
     quantity: number;
     unitPricePaise: number;
   }[];
@@ -138,6 +140,8 @@ export interface MeasurementsInput {
 export interface OrderItemInput {
   garmentType: string;
   description: string;
+  designImageUrl?: string;
+  designReferenceUrl?: string;
   quantity: number;
   unitPrice: number;
 }
@@ -194,6 +198,8 @@ export interface PublicOrderDetail {
     id: string;
     garmentType: string;
     description: string | null;
+    designImageUrl?: string | null;
+    designReferenceUrl?: string | null;
     quantity: number;
     unitPricePaise: number;
   }[];
@@ -231,6 +237,8 @@ export interface WizardOrderInput {
   items: {
     garmentType: string;
     description: string;
+    designImageUrl?: string;
+    designReferenceUrl?: string;
     quantity: number;
     unitPrice: number;
   }[];

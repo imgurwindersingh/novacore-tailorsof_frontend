@@ -1,0 +1,94 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="1350" viewBox="0 0 1080 1350" role="img" aria-labelledby="title desc">
+  <title id="title">Novacore Tailor Shop Software Pricing</title>
+  <desc id="desc">A branded pricing poster showing monthly, annual, and three-year plans for Novacore tailor shop management software.</desc>
+  <defs>
+    <linearGradient id="background" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#07111f"/><stop offset=".5" stop-color="#101c39"/><stop offset="1" stop-color="#251253"/></linearGradient>
+    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#10d7ff"/><stop offset="1" stop-color="#9866ff"/></linearGradient>
+    <linearGradient id="annual" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#10d7ff"/><stop offset="1" stop-color="#7656ff"/></linearGradient>
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="18" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+    <filter id="shadow" x="-30%" y="-30%" width="160%" height="160%"><feDropShadow dx="0" dy="14" stdDeviation="18" flood-color="#000" flood-opacity=".32"/></filter>
+    <style>
+      .heading{font-family:Arial,sans-serif;font-weight:800;letter-spacing:-1px}.body{font-family:Arial,sans-serif}.small{font-family:Arial,sans-serif;font-size:19px;fill:#9fb3d9}.card{filter:url(#shadow)}
+      .float{animation:float 3s ease-in-out infinite;transform-origin:center}.blink{animation:blink 3s infinite;transform-origin:center}@keyframes float{50%{transform:translateY(-10px)}}@keyframes blink{0%,45%,55%,100%{transform:scaleY(1)}50%{transform:scaleY(.12)}}
+    </style>
+  </defs>
+  <rect width="1080" height="1350" fill="url(#background)"/>
+  <circle cx="134" cy="188" r="220" fill="#0ecff5" opacity=".08"/><circle cx="944" cy="102" r="250" fill="#8c5eff" opacity=".1"/><circle cx="930" cy="1180" r="270" fill="#0ecff5" opacity=".06"/>
+  <path d="M0 630 C170 560 240 710 390 630 S690 560 1080 680" stroke="#38dfff" stroke-width="2" fill="none" opacity=".16"/>
+
+  <g transform="translate(72 54)">
+    <image href="novacore-logo.svg" width="72" height="72"/>
+    <text x="88" y="31" class="heading" font-size="31" fill="#fff">NOVACORE</text>
+    <text x="89" y="57" class="body" font-size="16" fill="#9fb3d9" letter-spacing="2">TAILOR SHOP SOFTWARE</text>
+  </g>
+  <g transform="translate(796 56)"><rect width="215" height="46" rx="23" fill="#0dd4a0" fill-opacity=".13" stroke="#25deb0" stroke-opacity=".55"/><circle cx="25" cy="23" r="6" fill="#44f2bb"/><text x="42" y="29" class="body" font-size="17" font-weight="700" fill="#9dffd9">CLOUD • SECURE</text></g>
+
+  <text x="72" y="220" class="heading" font-size="62" fill="#fff">Run your tailor shop</text>
+  <text x="72" y="286" class="heading" font-size="62" fill="url(#accent)">without the paper chaos.</text>
+  <text x="72" y="332" class="body" font-size="23" fill="#b6c4e0">Clients, measurements, orders, payments and delivery — in one simple place.</text>
+
+  <g class="float" transform="translate(826 178)">
+    <ellipse cx="108" cy="195" rx="102" ry="18" fill="#0bcdf5" opacity=".17"/>
+    <path d="M52 80Q108 23 164 80V152Q108 206 52 152Z" fill="#172a50" stroke="#56e4ff" stroke-width="5" filter="url(#glow)"/>
+    <rect x="58" y="67" width="100" height="86" rx="31" fill="#d9f8ff" stroke="#71e9ff" stroke-width="5"/>
+    <g class="blink"><ellipse cx="84" cy="108" rx="10" ry="13" fill="#33227e"/><ellipse cx="132" cy="108" rx="10" ry="13" fill="#33227e"/></g>
+    <path d="M90 129Q108 143 126 129" fill="none" stroke="#33227e" stroke-width="5" stroke-linecap="round"/>
+    <path d="M108 67V45" stroke="#56e4ff" stroke-width="5"/><circle cx="108" cy="39" r="8" fill="#b079ff" filter="url(#glow)"/>
+    <path d="M40 168Q20 140 5 158M176 168Q196 140 211 158" fill="none" stroke="#56e4ff" stroke-width="8" stroke-linecap="round"/>
+    <rect x="48" y="155" width="120" height="55" rx="24" fill="#243c70" stroke="#9b7cff" stroke-width="4"/>
+    <path d="M77 181h62" stroke="#65e7ff" stroke-width="5" stroke-linecap="round"/>
+  </g>
+
+  <text x="72" y="424" class="heading" font-size="25" fill="#fff">CHOOSE YOUR PAYMENT PLAN</text>
+  <line x1="72" y1="444" x2="1008" y2="444" stroke="#9db5e0" opacity=".2"/>
+
+  <g class="card" transform="translate(72 480)">
+    <rect width="288" height="382" rx="28" fill="#11203d" stroke="#33517a"/>
+    <text x="28" y="55" class="heading" font-size="25" fill="#d9e6ff">MONTHLY</text>
+    <text x="28" y="105" class="heading" font-size="46" fill="#fff">₹499</text><text x="174" y="104" class="body" font-size="20" fill="#9fb3d9">/ month</text>
+    <path d="M28 135H260" stroke="#426083" opacity=".65"/>
+    <text x="28" y="177" class="body" font-size="19" fill="#d4e0fa">Flexible payment</text>
+    <text x="28" y="211" class="body" font-size="19" fill="#d4e0fa">Cancel anytime</text>
+    <text x="28" y="245" class="body" font-size="19" fill="#d4e0fa">Perfect to get started</text>
+    <rect x="28" y="294" width="232" height="56" rx="14" fill="#203556"/><text x="72" y="330" class="heading" font-size="19" fill="#fff">START FLEXIBLY</text>
+  </g>
+
+  <g class="card" transform="translate(396 460)">
+    <rect width="288" height="422" rx="28" fill="url(#annual)"/>
+    <rect x="16" y="-18" width="256" height="42" rx="20" fill="#eaffff"/><text x="61" y="10" class="heading" font-size="16" fill="#382b85">MOST POPULAR • SAVE ₹989</text>
+    <text x="28" y="72" class="heading" font-size="25" fill="#fff">YEARLY</text>
+    <text x="28" y="122" class="heading" font-size="46" fill="#fff">₹4,999</text><text x="192" y="121" class="body" font-size="19" fill="#e4dcff">/ year</text>
+    <text x="28" y="156" class="body" font-size="18" fill="#e9f9ff">Only ₹417 per month</text>
+    <path d="M28 180H260" stroke="#fff" opacity=".34"/>
+    <text x="28" y="222" class="body" font-size="19" fill="#fff">Free shop setup</text>
+    <text x="28" y="256" class="body" font-size="19" fill="#fff">Free staff training</text>
+    <text x="28" y="290" class="body" font-size="19" fill="#fff">Best value for growing shops</text>
+    <rect x="28" y="334" width="232" height="56" rx="14" fill="#fff"/><text x="78" y="370" class="heading" font-size="19" fill="#382b85">CHOOSE YEARLY</text>
+  </g>
+
+  <g class="card" transform="translate(720 480)">
+    <rect width="288" height="382" rx="28" fill="#11203d" stroke="#694dc4"/>
+    <text x="28" y="55" class="heading" font-size="25" fill="#d9e6ff">3-YEAR</text>
+    <text x="28" y="105" class="heading" font-size="46" fill="#fff">₹11,999</text>
+    <text x="28" y="138" class="body" font-size="18" fill="#bda9ff">Only ₹333 per month</text>
+    <path d="M28 160H260" stroke="#426083" opacity=".65"/>
+    <text x="28" y="202" class="body" font-size="19" fill="#d4e0fa">Save ₹5,965</text>
+    <text x="28" y="236" class="body" font-size="19" fill="#d4e0fa">Free setup &amp; training</text>
+    <text x="28" y="270" class="body" font-size="19" fill="#d4e0fa">Best for long-term growth</text>
+    <rect x="28" y="294" width="232" height="56" rx="14" fill="#203556"/><text x="77" y="330" class="heading" font-size="19" fill="#fff">SAVE THE MOST</text>
+  </g>
+
+  <text x="72" y="960" class="heading" font-size="31" fill="#fff">Everything your shop needs — included.</text>
+  <g transform="translate(72 1000)">
+    <g><circle cx="15" cy="15" r="15" fill="#0bd3a1"/><path d="M8 15l5 5 9-11" stroke="#fff" stroke-width="3" fill="none"/><text x="42" y="21" class="body" font-size="21" fill="#d8e4fb">Unlimited clients &amp; measurements</text></g>
+    <g transform="translate(0 52)"><circle cx="15" cy="15" r="15" fill="#0bd3a1"/><path d="M8 15l5 5 9-11" stroke="#fff" stroke-width="3" fill="none"/><text x="42" y="21" class="body" font-size="21" fill="#d8e4fb">Orders, payments &amp; delivery tracking</text></g>
+    <g transform="translate(0 104)"><circle cx="15" cy="15" r="15" fill="#0bd3a1"/><path d="M8 15l5 5 9-11" stroke="#fff" stroke-width="3" fill="none"/><text x="42" y="21" class="body" font-size="21" fill="#d8e4fb">2 staff logins &amp; secure cloud backup</text></g>
+    <g transform="translate(500 0)"><circle cx="15" cy="15" r="15" fill="#0bd3a1"/><path d="M8 15l5 5 9-11" stroke="#fff" stroke-width="3" fill="none"/><text x="42" y="21" class="body" font-size="21" fill="#d8e4fb">Default garment rates</text></g>
+    <g transform="translate(500 52)"><circle cx="15" cy="15" r="15" fill="#0bd3a1"/><path d="M8 15l5 5 9-11" stroke="#fff" stroke-width="3" fill="none"/><text x="42" y="21" class="body" font-size="21" fill="#d8e4fb">Free setup on annual plans</text></g>
+    <g transform="translate(500 104)"><circle cx="15" cy="15" r="15" fill="#0bd3a1"/><path d="M8 15l5 5 9-11" stroke="#fff" stroke-width="3" fill="none"/><text x="42" y="21" class="body" font-size="21" fill="#d8e4fb">Friendly support when needed</text></g>
+  </g>
+  <rect x="72" y="1198" width="936" height="90" rx="24" fill="#fff" fill-opacity=".09" stroke="#66defb" stroke-opacity=".35"/>
+  <text x="105" y="1234" class="heading" font-size="22" fill="#fff">ONE-TIME BUSINESS LICENCE</text><text x="105" y="1263" class="body" font-size="17" fill="#b7c9e9">Setup, training, 3 years cloud hosting &amp; support included.</text>
+  <text x="741" y="1239" class="heading" font-size="34" fill="#78eaff">₹19,999</text><text x="741" y="1268" class="body" font-size="16" fill="#c6d5ef">Then ₹2,999/year after 3 years</text>
+  <text x="72" y="1320" class="body" font-size="15" fill="#8297bd">Prices are per shop. GST applicable where required.</text>
+</svg>
