@@ -47,8 +47,8 @@ function NavLinks({ pathname, onNavigate }: { pathname: string; onNavigate?: () 
           className={cn(
             "flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition-colors",
             isActive(item.href, pathname)
-              ? "bg-primary text-primary-foreground"
-              : "text-muted-foreground hover:bg-muted hover:text-foreground"
+              ? "bg-sidebar-primary text-sidebar-primary-foreground"
+              : "text-sidebar-foreground/70 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
           )}
         >
           <item.icon className="size-4" />
@@ -61,16 +61,18 @@ function NavLinks({ pathname, onNavigate }: { pathname: string; onNavigate?: () 
 
 function UserBlock({ user }: { user: SessionUser }) {
   return (
-    <div className="flex items-center gap-3 border-t px-3 py-4">
+    <div className="flex items-center gap-3 border-t border-sidebar-border px-3 py-4">
       <Avatar className="size-9">
-        <AvatarFallback>{initials(user.name)}</AvatarFallback>
+        <AvatarFallback className="bg-sidebar-primary text-sidebar-primary-foreground">
+          {initials(user.name)}
+        </AvatarFallback>
       </Avatar>
       <div className="min-w-0 flex-1">
-        <p className="truncate text-sm font-medium">{user.name}</p>
-        <p className="truncate text-xs text-muted-foreground">{user.email}</p>
+        <p className="truncate text-sm font-medium text-sidebar-foreground">{user.name}</p>
+        <p className="truncate text-xs text-sidebar-foreground/60">{user.email}</p>
       </div>
       <form action={doLogout}>
-        <Button type="submit" variant="ghost" size="icon" aria-label="Log out">
+        <Button type="submit" variant="ghost" size="icon" aria-label="Log out" className="text-sidebar-foreground/70 hover:bg-sidebar-accent hover:text-sidebar-foreground">
           <LogOut className="size-4" />
         </Button>
       </form>
@@ -80,7 +82,7 @@ function UserBlock({ user }: { user: SessionUser }) {
 
 function Brand() {
   return (
-    <div className="flex items-center gap-2.5 px-3 py-5">
+    <div className="flex items-center gap-2.5 border-b border-sidebar-border px-3 py-5">
       <Image
         src="/logo.png"
         alt="Bluestar Tailors"
@@ -90,9 +92,14 @@ function Brand() {
         className="shrink-0 object-contain"
         priority
       />
-      <span className="min-w-0 truncate text-lg font-semibold tracking-tight">
-        Bluestar Tailors
-      </span>
+      <div className="min-w-0 leading-tight">
+        <span className="block truncate text-lg font-semibold tracking-tight text-sidebar-foreground">
+          Bluestar Tailors
+        </span>
+        <span className="block truncate text-[11px] font-medium uppercase tracking-[0.18em] text-sidebar-foreground/50">
+          Atelier
+        </span>
+      </div>
     </div>
   );
 }
@@ -103,7 +110,7 @@ export function Sidebar({ user }: { user: SessionUser }) {
 
   return (
     <>
-      <aside className="sticky top-0 hidden h-screen w-60 shrink-0 flex-col border-r bg-card md:flex">
+      <aside className="sticky top-0 hidden h-screen w-60 shrink-0 flex-col border-r border-sidebar-border bg-sidebar md:flex">
         <Brand />
         <div className="flex-1 px-3">
           <NavLinks pathname={pathname} />
@@ -111,7 +118,7 @@ export function Sidebar({ user }: { user: SessionUser }) {
         <UserBlock user={user} />
       </aside>
 
-      <div className="fixed inset-x-0 top-0 z-40 flex items-center justify-between border-b bg-card px-4 py-2 md:hidden">
+      <div className="fixed inset-x-0 top-0 z-40 flex items-center justify-between border-b border-sidebar-border bg-sidebar px-4 py-2 md:hidden">
         <div className="flex items-center gap-2">
           <Image
             src="/logo.png"
@@ -122,13 +129,13 @@ export function Sidebar({ user }: { user: SessionUser }) {
             className="shrink-0 object-contain"
             priority
           />
-          <span className="font-semibold">Bluestar Tailors</span>
+          <span className="font-semibold text-sidebar-foreground">Bluestar Tailors</span>
         </div>
         <Sheet open={open} onOpenChange={setOpen}>
-          <SheetTrigger render={<Button variant="ghost" size="icon" aria-label="Open menu" />}>
+          <SheetTrigger render={<Button variant="ghost" size="icon" aria-label="Open menu" className="text-sidebar-foreground/80" />}>
             <Menu className="size-5" />
           </SheetTrigger>
-          <SheetContent side="left" className="flex w-64 flex-col p-0">
+          <SheetContent side="left" className="flex w-64 flex-col border-sidebar-border bg-sidebar p-0">
             <SheetTitle className="sr-only">Navigation</SheetTitle>
             <Brand />
             <div className="flex-1 px-3">

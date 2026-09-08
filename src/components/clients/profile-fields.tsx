@@ -32,7 +32,7 @@ export function ProfileFields({ form }: { form: AnyForm }) {
             <User className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
             <Input
               id="profile.fullName"
-              placeholder="e.g. Gurwinder Singh"
+              placeholder="Full name"
               autoFocus
               autoComplete="off"
               className="pl-9"

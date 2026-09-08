@@ -19,15 +19,23 @@ export default async function LoginPage() {
   if (session) redirect("/dashboard");
 
   return (
-    <main className="flex flex-1 items-center justify-center p-6">
-      <Card className="w-full max-w-sm">
+    <main className="relative flex flex-1 items-center justify-center overflow-hidden p-6">
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0"
+        style={{
+          background:
+            "radial-gradient(600px 320px at 20% 0%, color-mix(in oklab, var(--primary) 14%, transparent), transparent 60%), radial-gradient(520px 300px at 85% 110%, color-mix(in oklab, var(--accent) 35%, transparent), transparent 60%)",
+        }}
+      />
+      <Card className="relative w-full max-w-sm shadow-lg shadow-black/5">
         <CardHeader className="text-center">
           <Image
             src="/logo.png"
             alt="Bluestar Tailors"
-            width={48}
-            height={48}
-            style={{ width: "auto", height: "48px" }}
+            width={52}
+            height={52}
+            style={{ width: "auto", height: "52px" }}
             className="mx-auto mb-2 object-contain"
             priority
           />
