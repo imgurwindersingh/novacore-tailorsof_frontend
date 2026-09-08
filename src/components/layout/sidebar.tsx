@@ -64,11 +64,11 @@ function UserBlock({ user }: { user: SessionUser }) {
     <div className="flex items-center gap-3 border-t border-sidebar-border px-3 py-4">
       <Avatar className="size-9">
         <AvatarFallback className="bg-sidebar-primary text-sidebar-primary-foreground">
-          {initials(user.name)}
+          {initials("Bluestar Tailors")}
         </AvatarFallback>
       </Avatar>
       <div className="min-w-0 flex-1">
-        <p className="truncate text-sm font-medium text-sidebar-foreground">{user.name}</p>
+        <p className="truncate text-sm font-medium text-sidebar-foreground">Bluestar Tailors</p>
         <p className="truncate text-xs text-sidebar-foreground/60">{user.email}</p>
       </div>
       <form action={doLogout}>
