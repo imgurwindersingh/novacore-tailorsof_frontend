@@ -1,7 +1,13 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { updateWhatsappBusinessRequest } from "@/lib/api/settings";
+import {
+  updateDeliveryPresetsRequest,
+  updateGarmentRatesRequest,
+  updateGstSettingsRequest,
+  updateWhatsappBusinessRequest,
+  type GarmentRateEntry,
+} from "@/lib/api/settings";
 import { ApiError } from "@/lib/api/client";
 import type { ShopSettings } from "@/lib/types";
 
@@ -14,6 +20,52 @@ export async function updateWhatsappBusinessAction(
 ): Promise<ServiceResult<ShopSettings>> {
   try {
     const data = await updateWhatsappBusinessRequest(mobile);
+    revalidatePath("/settings");
+    return { ok: true, data };
+  } catch (e) {
+    console.error("Settings action error:", e);
+    if (e instanceof ApiError) return { ok: false, error: e.message };
+    if (e instanceof Error) return { ok: false, error: e.message };
+    return { ok: false, error: "Something went wrong. Please try again." };
+  }
+}
+
+export async function updateGarmentRatesAction(
+  rates: GarmentRateEntry[]
+): Promise<ServiceResult<ShopSettings>> {
+  try {
+    const data = await updateGarmentRatesRequest(rates);
+    revalidatePath("/settings");
+    return { ok: true, data };
+  } catch (e) {
+    console.error("Settings action error:", e);
+    if (e instanceof ApiError) return { ok: false, error: e.message };
+    if (e instanceof Error) return { ok: false, error: e.message };
+    return { ok: false, error: "Something went wrong. Please try again." };
+  }
+}
+
+export async function updateDeliveryPresetsAction(
+  presets: number[]
+): Promise<ServiceResult<ShopSettings>> {
+  try {
+    const data = await updateDeliveryPresetsRequest(presets);
+    revalidatePath("/settings");
+    return { ok: true, data };
+  } catch (e) {
+    console.error("Settings action error:", e);
+    if (e instanceof ApiError) return { ok: false, error: e.message };
+    if (e instanceof Error) return { ok: false, error: e.message };
+    return { ok: false, error: "Something went wrong. Please try again." };
+  }
+}
+
+export async function updateGstSettingsAction(dto: {
+  gstRatePercent: number | null;
+  gstNumber: string | null;
+}): Promise<ServiceResult<ShopSettings>> {
+  try {
+    const data = await updateGstSettingsRequest(dto);
     revalidatePath("/settings");
     return { ok: true, data };
   } catch (e) {

@@ -1,3 +1,6 @@
+import { DeliveryPresetsSettingsForm } from "@/components/settings/delivery-presets-settings-form";
+import { GarmentRatesSettingsForm } from "@/components/settings/garment-rates-settings-form";
+import { GstSettingsForm } from "@/components/settings/gst-settings-form";
 import { WhatsAppSettingsForm } from "@/components/settings/whatsapp-settings-form";
 import { PageHeader } from "@/components/layout/page-header";
 import { getSettingsRequest } from "@/lib/api/settings";
@@ -10,7 +13,13 @@ export const metadata = {
 export const dynamic = "force-dynamic";
 
 export default async function SettingsPage() {
-  let settings: ShopSettings = { whatsappBusinessMobile: null };
+  let settings: ShopSettings = {
+    whatsappBusinessMobile: null,
+    gstRatePercent: null,
+    gstNumber: null,
+    defaultGarmentRates: {},
+    deliveryPresets: [],
+  };
 
   try {
     settings = await getSettingsRequest();
@@ -31,6 +40,12 @@ export default async function SettingsPage() {
         description="Shop configuration"
       />
       <div className="space-y-6">
+        <GstSettingsForm
+          initialRate={settings.gstRatePercent}
+          initialNumber={settings.gstNumber}
+        />
+        <GarmentRatesSettingsForm initialRates={settings.defaultGarmentRates} />
+        <DeliveryPresetsSettingsForm initialPresets={settings.deliveryPresets} />
         <WhatsAppSettingsForm initialValue={settings.whatsappBusinessMobile} />
       </div>
     </>

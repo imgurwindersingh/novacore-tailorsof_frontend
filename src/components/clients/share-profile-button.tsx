@@ -43,8 +43,8 @@ export function ShareProfileButton({
       : `/p/${clientId}`;
 
   const message = clientName
-    ? `Hi ${clientName}, here is your profile link at Unique Tailors:\n${profileUrl}\n\nFor any changes, just reply to this WhatsApp.`
-    : `Here is your profile link at Unique Tailors:\n${profileUrl}`;
+    ? `Hi ${clientName}, here is your profile link at Bluestar Tailors:\n${profileUrl}\n\nFor any changes, just reply to this WhatsApp.`
+    : `Here is your profile link at Bluestar Tailors:\n${profileUrl}`;
 
   function openDialog() {
     setNumber(clientMobile ?? "");

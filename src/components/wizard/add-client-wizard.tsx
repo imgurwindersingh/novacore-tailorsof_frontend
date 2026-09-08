@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -15,6 +15,7 @@ import {
 import { MeasurementsFields } from "@/components/clients/measurements-fields";
 import { ProfileFields } from "@/components/clients/profile-fields";
 import { Card, CardContent } from "@/components/ui/card";
+import { datePlusDays } from "@/lib/dates";
 import { StepOrdersPayment } from "./step-orders-payment";
 import { StepReview } from "./step-review";
 import { WizardNav } from "./wizard-nav";
@@ -24,7 +25,15 @@ type WizardFormValues = z.input<typeof addClientWizardSchema>;
 
 const STEP_FIELDS = ["profile", "measurements", "order"] as const;
 
-export function AddClientWizard() {
+export function AddClientWizard({
+  defaultGstRatePercent = null,
+  defaultGarmentRates = {},
+  deliveryPresets = [],
+}: {
+  defaultGstRatePercent?: number | null;
+  defaultGarmentRates?: Record<string, number>;
+  deliveryPresets?: number[];
+}) {
   const router = useRouter();
   const [step, setStep] = useState(0);
   const [serverError, setServerError] = useState<string | null>(null);
@@ -35,9 +44,6 @@ export function AddClientWizard() {
       profile: {
         fullName: "",
         mobile: "",
-        fatherOrHusband: "",
-        email: "",
-        address: "",
         notes: "",
       },
       measurements: {
@@ -62,10 +68,11 @@ export function AddClientWizard() {
         },
       },
       order: {
-        items: [{ garmentType: "", description: "", quantity: 1, unitPrice: 0 }],
-        expectedDelivery: "",
+        items: [],
+        expectedDelivery: deliveryPresets[0] ? datePlusDays(deliveryPresets[0]) : "",
         advance: 0,
         paymentMethod: "",
+        gstRatePercent: defaultGstRatePercent ?? 0,
       },
     },
   });
@@ -102,6 +109,24 @@ export function AddClientWizard() {
   }
 
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // Fast data entry: pressing Enter in a text input advances to the next step.
+  useEffect(() => {
+    function onKeyDown(event: KeyboardEvent) {
+      if (event.key !== "Enter") return;
+      const target = event.target as HTMLElement | null;
+      if (!target || target instanceof HTMLTextAreaElement || target instanceof HTMLButtonElement) {
+        return;
+      }
+      if (target instanceof HTMLInputElement && target.type !== "text" && target.type !== "tel") {
+        return;
+      }
+      event.preventDefault();
+      if (step < WIZARD_STEPS.length - 1) void goToStep(step + 1);
+    }
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  });
 
   async function confirm() {
     setIsSubmitting(true);
@@ -165,7 +190,13 @@ export function AddClientWizard() {
 
         {step === 0 ? <ProfileFields form={form as never} /> : null}
         {step === 1 ? <MeasurementsFields form={form as never} /> : null}
-        {step === 2 ? <StepOrdersPayment form={form as never} /> : null}
+        {step === 2 ? (
+          <StepOrdersPayment
+            form={form as never}
+            defaultRates={defaultGarmentRates}
+            deliveryPresets={deliveryPresets}
+          />
+        ) : null}
         {step === 3 ? (
           <StepReview form={form as never} onEdit={(s) => setStep(s)} />
         ) : null}

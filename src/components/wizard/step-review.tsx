@@ -9,7 +9,7 @@ import {
   PAYMENT_METHOD_LABELS,
   SHIRT_MEASUREMENT_LABELS,
 } from "@/lib/constants";
-import { formatINR, rupeesToPaise } from "@/lib/money";
+import { formatINR, gstPaiseFor, rupeesToPaise } from "@/lib/money";
 import type { PaymentMethod, Unit } from "@/lib/types";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -86,10 +86,13 @@ export function StepReview({
     quantity?: number;
     unitPrice?: number;
   }[];
-  const total = items.reduce(
+  const subtotal = items.reduce(
     (sum, item) => sum + (Number(item?.quantity) || 0) * (Number(item?.unitPrice) || 0),
     0
   );
+  const gstRate = Number(order?.gstRatePercent) || 0;
+  const gstAmount = gstPaiseFor(subtotal, gstRate);
+  const total = subtotal + gstAmount;
   const advance = Number(order?.advance) || 0;
   const due = Math.max(0, total - advance);
   const badge =
@@ -120,9 +123,6 @@ export function StepReview({
           <dl className="divide-y divide-border/60">
             <Row label="Full name" value={profile?.fullName} />
             <Row label="Mobile" value={profile?.mobile} />
-            <Row label="Father / husband" value={profile?.fatherOrHusband} />
-            <Row label="Email" value={profile?.email} />
-            <Row label="Address" value={profile?.address} />
             <Row label="Notes" value={profile?.notes} />
           </dl>
         </CardContent>
@@ -195,6 +195,15 @@ export function StepReview({
           </Table>
           <Separator />
           <dl className="divide-y divide-border/60">
+            {gstRate > 0 ? (
+              <>
+                <Row label="Subtotal" value={formatINR(rupeesToPaise(subtotal))} />
+                <Row
+                  label={`GST (${gstRate}%)`}
+                  value={formatINR(rupeesToPaise(gstAmount))}
+                />
+              </>
+            ) : null}
             <Row label="Order total" value={formatINR(rupeesToPaise(total))} />
             <Row label="Advance paid" value={formatINR(rupeesToPaise(advance))} />
             <Row label="Balance due" value={formatINR(rupeesToPaise(due))} />

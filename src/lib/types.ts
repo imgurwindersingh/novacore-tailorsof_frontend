@@ -9,6 +9,14 @@ export type PaymentMethod = "CASH" | "UPI" | "CARD";
 
 export interface ShopSettings {
   whatsappBusinessMobile: string | null;
+  /** Default GST rate (%) applied to new orders when not overridden. */
+  gstRatePercent: number | null;
+  /** Business GSTIN shown on the order slip / invoice. */
+  gstNumber: string | null;
+  /** Default price per garment type, used to pre-fill the unit rate on new orders. */
+  defaultGarmentRates: Record<string, number>;
+  /** Delivery-duration presets (in days) offered when creating an order. */
+  deliveryPresets: number[];
 }
 
 export interface SessionUser {
@@ -41,6 +49,9 @@ export interface OrderDetail {
   status: OrderStatus;
   paymentStatus: PaymentStatus;
   totalPaise: number;
+  subtotalPaise: number;
+  gstPaise: number;
+  gstRatePercent: number | null;
   paidPaise: number;
   duePaise: number;
   expectedDelivery: string | null;
@@ -152,9 +163,6 @@ export interface CreateClientInput {
   profile: {
     fullName: string;
     mobile: string;
-    fatherOrHusband: string;
-    email: string;
-    address: string;
     notes: string;
   };
   measurements: MeasurementsInput;
@@ -163,6 +171,7 @@ export interface CreateClientInput {
     expectedDelivery: string;
     advance: number;
     paymentMethod: string;
+    gstRatePercent: number;
   };
 }
 
@@ -191,6 +200,9 @@ export interface PublicOrderDetail {
   status: OrderStatus;
   paymentStatus: PaymentStatus;
   totalPaise: number;
+  subtotalPaise: number;
+  gstPaise: number;
+  gstRatePercent: number | null;
   paidPaise: number;
   duePaise: number;
   expectedDelivery: string | null;
@@ -211,6 +223,8 @@ export interface PublicClientProfile {
   id: string;
   fullName: string;
   createdAt: string;
+  /** Business GSTIN shown on the invoice (from shop settings). */
+  gstNumber: string | null;
   generalMeasurement: { unit: Unit; height: number | null } | null;
   shirtMeasurement: {
     unit: Unit;
@@ -245,4 +259,5 @@ export interface WizardOrderInput {
   expectedDelivery: string;
   advance: number;
   paymentMethod: PaymentMethod | "";
+  gstRatePercent: number;
 }

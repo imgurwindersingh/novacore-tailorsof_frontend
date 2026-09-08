@@ -43,8 +43,11 @@ export function WizardNav({
           Confirm &amp; Save
         </Button>
       ) : (
-        <Button type="button" onClick={onNext} disabled={isSubmitting}>
+        <Button type="button" onClick={onNext} disabled={isSubmitting} className="gap-2">
           Next <ArrowRight className="size-4" />
+          <kbd className="hidden rounded border border-current/20 px-1 text-[10px] font-medium opacity-70 sm:inline">
+            ↵
+          </kbd>
         </Button>
       )}
     </div>

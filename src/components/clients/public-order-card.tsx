@@ -27,7 +27,9 @@ const ORDER_STATUS_CLASSES: Record<OrderStatus, string> = {
 };
 
 // Detail body — shared between always-open and toggled views
-function OrderDetail({ order }: { order: PublicOrderDetail }) {
+function OrderDetail({ order, gstNumber }: { order: PublicOrderDetail; gstNumber: string | null }) {
+  const hasGst = order.gstRatePercent != null;
+
   return (
     <CardContent className="space-y-4">
       {/* Date + totals compact row */}
@@ -99,20 +101,44 @@ function OrderDetail({ order }: { order: PublicOrderDetail }) {
       </div>
 
       {/* Payment summary */}
-      <div className="flex justify-end gap-8 text-sm">
-        <div className="text-right">
-          <p className="text-xs text-muted-foreground">Paid</p>
-          <p className="font-medium text-green-700">{formatINR(order.paidPaise)}</p>
-        </div>
-        <div className="text-right">
-          <p className="text-xs text-muted-foreground">Due</p>
-          <p className="font-medium text-orange-700">{formatINR(order.duePaise)}</p>
-        </div>
-        <div className="text-right">
-          <p className="text-xs text-muted-foreground">Total</p>
-          <p className="font-semibold">{formatINR(order.totalPaise)}</p>
-        </div>
+      <div className="flex justify-end">
+        <dl className="w-56 space-y-1.5 text-sm">
+          {hasGst ? (
+            <>
+              <div className="flex items-baseline justify-between gap-4">
+                <dt className="text-muted-foreground">Subtotal</dt>
+                <dd className="tabular-nums">{formatINR(order.subtotalPaise)}</dd>
+              </div>
+              <div className="flex items-baseline justify-between gap-4">
+                <dt className="text-muted-foreground">GST ({order.gstRatePercent}%)</dt>
+                <dd className="tabular-nums">{formatINR(order.gstPaise)}</dd>
+              </div>
+            </>
+          ) : null}
+          <div className="flex items-baseline justify-between gap-4">
+            <dt className="text-muted-foreground">Total</dt>
+            <dd className="font-semibold tabular-nums">{formatINR(order.totalPaise)}</dd>
+          </div>
+          <div className="flex items-baseline justify-between gap-4">
+            <dt className="text-muted-foreground">Paid</dt>
+            <dd className="font-medium text-green-700 tabular-nums">{formatINR(order.paidPaise)}</dd>
+          </div>
+          <div className="flex items-baseline justify-between gap-4">
+            <dt className="text-muted-foreground">Due</dt>
+            <dd
+              className={`font-medium tabular-nums ${
+                order.duePaise > 0 ? "text-orange-700" : "text-green-700"
+              }`}
+            >
+              {formatINR(order.duePaise)}
+            </dd>
+          </div>
+        </dl>
       </div>
+
+      {gstNumber ? (
+        <p className="text-xs text-muted-foreground">GSTIN: {gstNumber}</p>
+      ) : null}
 
       {order.notes ? (
         <p className="rounded-md bg-muted/40 px-3 py-2 text-sm text-muted-foreground">
@@ -124,7 +150,13 @@ function OrderDetail({ order }: { order: PublicOrderDetail }) {
   );
 }
 
-export function PublicOrderCard({ order }: { order: PublicOrderDetail }) {
+export function PublicOrderCard({
+  order,
+  gstNumber = null,
+}: {
+  order: PublicOrderDetail;
+  gstNumber?: string | null;
+}) {
   // Only DELIVERED orders get the show/hide toggle; all others are always open.
   const isDelivered = order.status === "DELIVERED";
   const [expanded, setExpanded] = useState(false);
@@ -167,7 +199,7 @@ export function PublicOrderCard({ order }: { order: PublicOrderDetail }) {
 
       {/* ── Detail body ──────────────────────────────────────────────────── */}
       {/* Non-delivered: always show. Delivered: show only when expanded. */}
-      {(!isDelivered || expanded) && <OrderDetail order={order} />}
+      {(!isDelivered || expanded) && <OrderDetail order={order} gstNumber={gstNumber} />}
     </Card>
   );
 }

@@ -57,7 +57,7 @@ export default async function PublicProfilePage({
             <div className="flex size-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
               <Scissors className="size-4" />
             </div>
-            <span className="font-semibold">Unique Tailors</span>
+            <span className="font-semibold">Bluestar Tailors</span>
           </div>
           <PublicRefreshButton />
         </div>
@@ -83,7 +83,7 @@ export default async function PublicProfilePage({
             </h2>
             <div className="space-y-4">
               {client.orders.map((order) => (
-                <PublicOrderCard key={order.id} order={order} />
+                <PublicOrderCard key={order.id} order={order} gstNumber={client.gstNumber} />
               ))}
             </div>
 
@@ -99,7 +99,7 @@ export default async function PublicProfilePage({
 
       {/* Footer */}
       <footer className="border-t py-6 text-center text-xs text-muted-foreground">
-        This is a read-only profile shared by Unique Tailors.
+        This is a read-only profile shared by Bluestar Tailors.
       </footer>
     </div>
   );

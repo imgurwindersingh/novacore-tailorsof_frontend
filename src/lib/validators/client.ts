@@ -11,6 +11,13 @@ export const clientProfileSchema = z.object({
   notes: z.string().trim().max(500, "Max 500 characters"),
 });
 
+/** Profile shape used by the Add Client wizard — omits father/husband, email, address. */
+export const wizardProfileSchema = z.object({
+  fullName: z.string().trim().min(2, "Name is required").max(100, "Max 100 characters"),
+  mobile: mobileSchema,
+  notes: z.string().trim().max(500, "Max 500 characters"),
+});
+
 export const measurementsSchema = z.object({
   unit: z.enum(UNITS),
   general: z.object({ height: measureField }),
@@ -46,9 +53,11 @@ export const wizardOrderSchema = z
     expectedDelivery: z.string().min(1, "Delivery date is required"),
     advance: z.number().min(0, "Cannot be negative"),
     paymentMethod: z.union([z.enum(PAYMENT_METHODS), z.literal("")]),
+    gstRatePercent: z.number().int("Whole numbers only").min(0, "Min 0%").max(100, "Max 100%"),
   })
   .superRefine((order, ctx) => {
-    const total = order.items.reduce((sum, item) => sum + item.quantity * item.unitPrice, 0);
+    const subtotal = order.items.reduce((sum, item) => sum + item.quantity * item.unitPrice, 0);
+    const total = subtotal + Math.round((subtotal * (order.gstRatePercent ?? 0)) / 100);
     if (order.advance > total) {
       ctx.addIssue({ code: "custom", path: ["advance"], message: "Advance cannot exceed the order total" });
     }
@@ -58,7 +67,7 @@ export const wizardOrderSchema = z
   });
 
 export const addClientWizardSchema = z.object({
-  profile: clientProfileSchema,
+  profile: wizardProfileSchema,
   measurements: measurementsSchema,
   order: wizardOrderSchema,
 });

@@ -83,7 +83,7 @@ function Brand() {
     <div className="flex items-center gap-2.5 px-3 py-5">
       <Image
         src="/logo.png"
-        alt="Unique Tailors"
+        alt="Bluestar Tailors"
         width={36}
         height={36}
         style={{ width: "auto", height: "36px" }}
@@ -91,7 +91,7 @@ function Brand() {
         priority
       />
       <span className="min-w-0 truncate text-lg font-semibold tracking-tight">
-        Unique Tailors
+        Bluestar Tailors
       </span>
     </div>
   );
@@ -115,14 +115,14 @@ export function Sidebar({ user }: { user: SessionUser }) {
         <div className="flex items-center gap-2">
           <Image
             src="/logo.png"
-            alt="Unique Tailors"
+            alt="Bluestar Tailors"
             width={32}
             height={32}
             style={{ width: "auto", height: "32px" }}
             className="shrink-0 object-contain"
             priority
           />
-          <span className="font-semibold">Unique Tailors</span>
+          <span className="font-semibold">Bluestar Tailors</span>
         </div>
         <Sheet open={open} onOpenChange={setOpen}>
           <SheetTrigger render={<Button variant="ghost" size="icon" aria-label="Open menu" />}>

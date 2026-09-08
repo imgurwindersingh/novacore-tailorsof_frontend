@@ -10,6 +10,7 @@ import { formatINR } from "@/lib/money";
 import type { OrderDetail, PaymentStatus } from "@/lib/types";
 import { markOrderDeliveredAction } from "@/lib/actions/orders.actions";
 import { RecordPaymentDialog } from "@/components/clients/record-payment-dialog";
+import { ShareProfileButton } from "@/components/clients/share-profile-button";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -64,9 +65,24 @@ const PAYMENT_STATUS_CLASSES: Record<PaymentStatus, string> = {
 };
 
 // clientId is passed down from parent page — we forward it to RecordPaymentDialog
-function OrderCard({ order, clientId }: { order: OrderDetail; clientId?: string }) {
+function OrderCard({
+  order,
+  clientId,
+  clientName,
+  clientMobile,
+  gstNumber,
+  whatsappBusinessMobile,
+}: {
+  order: OrderDetail;
+  clientId?: string;
+  clientName?: string;
+  clientMobile?: string;
+  gstNumber?: string | null;
+  whatsappBusinessMobile?: string | null;
+}) {
   const isDelivered = order.status === "DELIVERED";
   const isCancelled = order.status === "CANCELLED";
+  const hasGst = order.gstRatePercent != null;
 
   return (
     <Card>
@@ -136,20 +152,41 @@ function OrderCard({ order, clientId }: { order: OrderDetail; clientId?: string 
 
         <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
           <dl className="grid grid-cols-3 gap-6 text-sm">
+            {hasGst ? (
+              <>
+                <div>
+                  <dt className="text-xs text-muted-foreground">Subtotal</dt>
+                  <dd className="tabular-nums">{formatINR(order.subtotalPaise)}</dd>
+                </div>
+                <div>
+                  <dt className="text-xs text-muted-foreground">GST ({order.gstRatePercent}%)</dt>
+                  <dd className="tabular-nums">{formatINR(order.gstPaise)}</dd>
+                </div>
+              </>
+            ) : null}
             <div>
               <dt className="text-xs text-muted-foreground">Total</dt>
-              <dd className="font-semibold">{formatINR(order.totalPaise)}</dd>
+              <dd className="font-semibold tabular-nums">{formatINR(order.totalPaise)}</dd>
             </div>
             <div>
               <dt className="text-xs text-muted-foreground">Paid</dt>
-              <dd className="font-medium text-green-700">{formatINR(order.paidPaise)}</dd>
+              <dd className="font-medium text-green-700 tabular-nums">{formatINR(order.paidPaise)}</dd>
             </div>
             <div>
               <dt className="text-xs text-muted-foreground">Due</dt>
-              <dd className="font-medium text-orange-700">{formatINR(order.duePaise)}</dd>
+              <dd className="font-medium text-orange-700 tabular-nums">{formatINR(order.duePaise)}</dd>
             </div>
           </dl>
-          <div className="flex items-center gap-4">
+          <div className="flex flex-wrap items-center gap-2">
+            {gstNumber ? <p className="text-xs text-muted-foreground">GSTIN: {gstNumber}</p> : null}
+            {clientId ? (
+              <ShareProfileButton
+                clientId={clientId}
+                clientMobile={clientMobile}
+                clientName={clientName}
+                whatsappBusinessMobile={whatsappBusinessMobile}
+              />
+            ) : null}
             {order.expectedDelivery ? (
               <p className="text-sm text-muted-foreground">
                 Delivery: {format(new Date(order.expectedDelivery), "dd MMM yyyy")}
@@ -168,7 +205,21 @@ function OrderCard({ order, clientId }: { order: OrderDetail; clientId?: string 
   );
 }
 
-export function OrdersList({ orders, clientId }: { orders: OrderDetail[]; clientId?: string }) {
+export function OrdersList({
+  orders,
+  clientId,
+  clientName,
+  clientMobile,
+  gstNumber,
+  whatsappBusinessMobile,
+}: {
+  orders: OrderDetail[];
+  clientId?: string;
+  clientName?: string;
+  clientMobile?: string;
+  gstNumber?: string | null;
+  whatsappBusinessMobile?: string | null;
+}) {
   if (orders.length === 0) {
     return (
       <Card className="p-12 text-center text-sm text-muted-foreground">
@@ -179,7 +230,15 @@ export function OrdersList({ orders, clientId }: { orders: OrderDetail[]; client
   return (
     <div className="space-y-4">
       {orders.map((order) => (
-        <OrderCard key={order.id} order={order} clientId={clientId} />
+        <OrderCard
+          key={order.id}
+          order={order}
+          clientId={clientId}
+          clientName={clientName}
+          clientMobile={clientMobile}
+          gstNumber={gstNumber}
+          whatsappBusinessMobile={whatsappBusinessMobile}
+        />
       ))}
     </div>
   );

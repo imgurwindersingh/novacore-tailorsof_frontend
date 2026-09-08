@@ -3,6 +3,7 @@ import { ORDER_STATUS_LABELS, PAYMENT_STATUS_LABELS } from "@/lib/constants";
 import { formatINR } from "@/lib/money";
 import { DeliveryStatusToggle } from "@/components/clients/delivery-status-toggle";
 import { RecordPaymentDialog } from "@/components/clients/record-payment-dialog";
+import { ShareProfileButton } from "@/components/clients/share-profile-button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import type { ClientDetail } from "@/lib/types";
@@ -22,7 +23,13 @@ const PAYMENT_STATUS_CLASSES: Record<string, string> = {
   PENDING: "border-red-600/30 bg-red-600/10 text-red-700",
 };
 
-export function ProfileCard({ client }: { client: ClientDetail }) {
+export function ProfileCard({
+  client,
+  whatsappBusinessMobile,
+}: {
+  client: ClientDetail;
+  whatsappBusinessMobile?: string | null;
+}) {
   return (
     <div className="space-y-6">
       <Card>
@@ -33,10 +40,6 @@ export function ProfileCard({ client }: { client: ClientDetail }) {
           <dl className="space-y-3">
             <Row label="Full name" value={client.fullName} />
             <Row label="Mobile" value={client.mobile} />
-            <Row label="Father / Husband" value={client.fatherOrHusband} />
-            <Row label="Email" value={client.email} />
-            <Row label="Address" value={client.address} />
-            <Row label="Notes" value={client.notes} />
           </dl>
         </CardContent>
       </Card>
@@ -96,11 +99,17 @@ export function ProfileCard({ client }: { client: ClientDetail }) {
                       </span>
                     ))}
                   </div>
+                  <div className="mt-3 flex flex-wrap items-center justify-end gap-2 border-t pt-3">
+                  <ShareProfileButton
+                    clientId={client.id}
+                    clientMobile={client.mobile}
+                    clientName={client.fullName}
+                    whatsappBusinessMobile={whatsappBusinessMobile}
+                  />
                   {order.duePaise > 0 ? (
-                    <div className="mt-3 flex justify-end border-t pt-3">
-                      <RecordPaymentDialog orderId={order.id} duePaise={order.duePaise} clientId={client.id} />
-                    </div>
+                    <RecordPaymentDialog orderId={order.id} duePaise={order.duePaise} clientId={client.id} />
                   ) : null}
+                </div>
                 </div>
               ))}
             </div>

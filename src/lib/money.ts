@@ -15,3 +15,9 @@ export function paiseToRupees(paise: number): number {
 export function formatINR(paise: number): string {
   return inr.format(paise / 100);
 }
+
+/** GST amount in paise for a rupee subtotal at the given rate (%). */
+export function gstPaiseFor(subtotalRupees: number, ratePercent: number): number {
+  if (!ratePercent || ratePercent <= 0 || subtotalRupees <= 0) return 0;
+  return Math.round((subtotalRupees * ratePercent) / 100);
+}
