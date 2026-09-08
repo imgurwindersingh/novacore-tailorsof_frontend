@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 import { format } from "date-fns";
 import type { Metadata } from "next";
 import { Scissors } from "lucide-react";
-import { PublicMeasurementsSection } from "@/components/clients/public-measurements-section";
+import { PublicDesignGallery } from "@/components/clients/public-design-gallery";
 import { PublicOrderCard } from "@/components/clients/public-order-card";
 import { PublicRefreshButton } from "@/components/clients/public-refresh-button";
 import { getPublicClientRequest } from "@/lib/api/clients";
@@ -72,9 +72,6 @@ export default async function PublicProfilePage({
           </p>
         </div>
 
-        {/* Measurements */}
-        <PublicMeasurementsSection client={client} />
-
         {/* Orders */}
         {hasOrders ? (
           <section>
@@ -89,6 +86,9 @@ export default async function PublicProfilePage({
                 <PublicOrderCard key={order.id} order={order} />
               ))}
             </div>
+
+            {/* Design gallery — reference images & links at the bottom */}
+            <PublicDesignGallery orders={client.orders} />
           </section>
         ) : (
           <Card className="p-12 text-center text-sm text-muted-foreground">

@@ -4,7 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
-import { LayoutDashboard, LogOut, Menu, UserPlus, Users } from "lucide-react";
+import { LayoutDashboard, LogOut, Menu, Settings, UserPlus, Users } from "lucide-react";
 import { doLogout } from "@/lib/actions/auth.actions";
 import type { SessionUser } from "@/lib/types";
 import { cn } from "@/lib/utils";
@@ -16,6 +16,7 @@ const NAV_ITEMS = [
   { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
   { href: "/clients", label: "Clients", icon: Users },
   { href: "/clients/new", label: "Add Client", icon: UserPlus },
+  { href: "/settings", label: "Settings", icon: Settings },
 ];
 
 function isActive(href: string, pathname: string) {

@@ -2,6 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { format } from "date-fns";
 import { DeleteClientDialog } from "@/components/clients/delete-client-dialog";
+import { ClientDesignReferences } from "@/components/clients/client-design-references";
 import { MeasurementsCard } from "@/components/clients/measurements-card";
 import { NewOrderDialog } from "@/components/clients/new-order-dialog";
 import { OrdersList } from "@/components/clients/orders-list";
@@ -12,6 +13,7 @@ import { PageHeader } from "@/components/layout/page-header";
 import { buttonVariants } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { getClientRequest } from "@/lib/api/clients";
+import { getSettingsRequest } from "@/lib/api/settings";
 import { ApiError } from "@/lib/api/client";
 
 export default async function ClientDetailPage({
@@ -29,6 +31,13 @@ export default async function ClientDetailPage({
     throw e;
   }
 
+  let settings = { whatsappBusinessMobile: null as string | null };
+  try {
+    settings = await getSettingsRequest();
+  } catch (e) {
+    if (e instanceof ApiError && e.status === 404) notFound();
+  }
+
   return (
     <>
       <PageHeader
@@ -36,7 +45,12 @@ export default async function ClientDetailPage({
         description={`Client since ${format(new Date(client.createdAt), "dd MMM yyyy")} · ${client.mobile}`}
         actions={
           <>
-            <ShareProfileButton clientId={client.id} />
+            <ShareProfileButton
+              clientId={client.id}
+              clientMobile={client.mobile}
+              clientName={client.fullName}
+              whatsappBusinessMobile={settings.whatsappBusinessMobile}
+            />
             <NewOrderDialog clientId={client.id} clientName={client.fullName} />
             <Link href={`/clients/${client.id}/edit`} className={buttonVariants({ variant: "outline" })}>
               Edit
@@ -55,8 +69,9 @@ export default async function ClientDetailPage({
         <TabsContent value="profile" className="mt-4">
           <ProfileCard client={client} />
         </TabsContent>
-        <TabsContent value="measurements" className="mt-4">
+        <TabsContent value="measurements" className="mt-4 space-y-6">
           <MeasurementsCard client={client} />
+          <ClientDesignReferences orders={client.orders} />
         </TabsContent>
         <TabsContent value="orders" className="mt-4 space-y-6">
           <OrdersList orders={client.orders} />

@@ -25,6 +25,15 @@ export async function getClientRequest(id: string): Promise<ClientDetail> {
   return apiFetch<ClientDetail>(`/api/clients/${id}`);
 }
 
+/** GET /api/clients/check-mobile/:mobile */
+export async function checkMobileRequest(
+  mobile: string
+): Promise<{ exists: boolean; fullName: string | null }> {
+  return apiFetch<{ exists: boolean; fullName: string | null }>(
+    `/api/clients/check-mobile/${encodeURIComponent(mobile.trim())}`
+  );
+}
+
 /** POST /api/clients */
 export async function createClientRequest(
   input: CreateClientInput

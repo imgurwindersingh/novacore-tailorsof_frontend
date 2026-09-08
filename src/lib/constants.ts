@@ -2,13 +2,12 @@ import type { OrderStatus, PaymentMethod, PaymentStatus } from "./types";
 
 export const UNITS = ["CM", "INCH"] as const;
 
-export const PAYMENT_METHODS = ["CASH", "UPI", "CARD", "OTHER"] as const;
+export const PAYMENT_METHODS = ["CASH", "UPI", "CARD"] as const;
 
 export const PAYMENT_METHOD_LABELS: Record<PaymentMethod, string> = {
   CASH: "Cash",
   UPI: "UPI",
   CARD: "Card",
-  OTHER: "Other",
 };
 
 export const ORDER_STATUSES = ["IN_PROGRESS", "COMPLETED", "DELIVERED", "CANCELLED"] as const;
@@ -34,7 +33,6 @@ export const GARMENT_TYPES = [
   "Sherwani",
   "Blazer",
   "Suit",
-  "Other",
 ];
 
 export const PAGE_SIZE = 10;

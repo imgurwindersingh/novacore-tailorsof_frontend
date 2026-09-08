@@ -2,6 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import {
+  checkMobileRequest,
   createClientRequest,
   deleteClientRequest,
   updateClientRequest,
@@ -18,6 +19,17 @@ function apiErr<T = never>(e: unknown): ServiceResult<T> {
   if (e instanceof ApiError) return { ok: false, error: e.message };
   if (e instanceof Error) return { ok: false, error: e.message };
   return { ok: false, error: "Something went wrong. Please try again." };
+}
+
+export async function checkMobileExistsAction(
+  mobile: string
+): Promise<ServiceResult<{ exists: boolean; fullName: string | null }>> {
+  try {
+    const data = await checkMobileRequest(mobile);
+    return { ok: true, data };
+  } catch (e) {
+    return apiErr(e);
+  }
 }
 
 export async function createClientWithOrderAction(

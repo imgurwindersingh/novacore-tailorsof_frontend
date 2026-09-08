@@ -5,7 +5,11 @@ export type Unit = "CM" | "INCH";
 export type Role = "ADMIN" | "STAFF";
 export type OrderStatus = "IN_PROGRESS" | "COMPLETED" | "DELIVERED" | "CANCELLED";
 export type PaymentStatus = "PAID" | "PARTIAL" | "PENDING";
-export type PaymentMethod = "CASH" | "UPI" | "CARD" | "OTHER";
+export type PaymentMethod = "CASH" | "UPI" | "CARD";
+
+export interface ShopSettings {
+  whatsappBusinessMobile: string | null;
+}
 
 export interface SessionUser {
   id: string;
@@ -46,6 +50,8 @@ export interface OrderDetail {
     id: string;
     garmentType: string;
     description: string | null;
+    designImageUrl: string | null;
+    designReferenceUrl: string | null;
     quantity: number;
     unitPricePaise: number;
   }[];
@@ -194,6 +200,8 @@ export interface PublicOrderDetail {
     id: string;
     garmentType: string;
     description: string | null;
+    designImageUrl: string | null;
+    designReferenceUrl: string | null;
     quantity: number;
     unitPricePaise: number;
   }[];

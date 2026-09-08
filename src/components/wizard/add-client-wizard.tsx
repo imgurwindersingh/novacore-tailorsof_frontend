@@ -7,7 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { AlertCircle } from "lucide-react";
 import { toast } from "sonner";
-import { createClientWithOrderAction } from "@/lib/actions/clients.actions";
+import { createClientWithOrderAction, checkMobileExistsAction } from "@/lib/actions/clients.actions";
 import {
   addClientWizardSchema,
   type AddClientWizardInput,
@@ -80,6 +80,22 @@ export function AddClientWizard() {
       if (!valid) {
         setStep(s);
         return;
+      }
+    }
+    // Check for duplicate mobile before leaving the profile step
+    if (step === 0 && target > 0) {
+      const mobile = form.getValues("profile.mobile");
+      if (mobile && mobile.trim().length === 10) {
+        setServerError(null);
+        const result = await checkMobileExistsAction(mobile);
+        if (result.ok && result.data.exists) {
+          form.setError("profile.mobile", {
+            message: "A client with this mobile number already exists",
+          });
+          setServerError("A client with this mobile number already exists");
+          window.scrollTo({ top: 0, behavior: "smooth" });
+          return;
+        }
       }
     }
     setStep(target);
