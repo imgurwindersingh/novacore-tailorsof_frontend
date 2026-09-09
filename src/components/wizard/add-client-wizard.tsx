@@ -150,6 +150,16 @@ export function AddClientWizard({
             return;
           }
           toast.success(`Client saved · Order ${result.data.orderNumber} created`);
+          const notified = result.data.notified;
+          if (notified?.channel === "whatsapp" && notified.ok) {
+            toast.success("WhatsApp message sent to client");
+          } else if (notified?.channel === "sms" && notified.ok) {
+            toast.success("SMS sent to client");
+          } else if (notified?.channel === "none") {
+            toast.info("No SMS/WhatsApp configured on this server yet");
+          } else if (notified && !notified.ok) {
+            toast.error(notified.error ?? "Message couldn't be sent");
+          }
           router.push(`/clients/${result.data.clientId}`);
           router.refresh();
         } catch (err) {

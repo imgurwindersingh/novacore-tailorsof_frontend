@@ -10,23 +10,41 @@ import { formatINR } from "@/lib/money";
 import type { OrderDetail, PaymentStatus } from "@/lib/types";
 import { markOrderDeliveredAction } from "@/lib/actions/orders.actions";
 import { RecordPaymentDialog } from "@/components/clients/record-payment-dialog";
-import { ShareProfileButton } from "@/components/clients/share-profile-button";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { Separator } from "@/components/ui/separator";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 
+function completionMessage(order: OrderDetail, clientName?: string): string {
+  const greeting = clientName ? `Namaste ${clientName} 🙏` : "Namaste 🙏";
+  const items = order.items
+    .map((item) => `${item.quantity}× ${item.garmentType}`)
+    .join(", ");
+  const dueLine = order.duePaise > 0 ? ` · Balance ${formatINR(order.duePaise)}` : "";
+  return `${greeting}\n\nYour order ${order.orderNumber} at Bluestar Tailors is ready for pickup! 🎉\n📦 ${items}\n💰 Total ${formatINR(order.totalPaise)} · Paid ${formatINR(order.paidPaise)}${dueLine}\n\nThank you for choosing us — see you soon! ✨`;
+}
+
 function MarkDeliveredButton({
-  orderId,
-  paymentStatus,
+  order,
+  clientName,
 }: {
-  orderId: string;
-  paymentStatus: string;
+  order: OrderDetail;
+  clientName?: string;
 }) {
   const router = useRouter();
   const [pending, setPending] = useState(false);
-  const isPaymentComplete = paymentStatus === "PAID";
+  const [preparedMessage, setPreparedMessage] = useState<string | null>(null);
+  const [copied, setCopied] = useState(false);
+  const isPaymentComplete = order.paymentStatus === "PAID";
 
   async function onClick() {
     if (!isPaymentComplete) {
@@ -34,27 +52,72 @@ function MarkDeliveredButton({
       return;
     }
     setPending(true);
-    const result = await markOrderDeliveredAction(orderId);
+    const result = await markOrderDeliveredAction(order.id);
     setPending(false);
     if (!result.ok) {
       toast.error(result.error);
       return;
     }
-    toast.success("Order marked as delivered");
+    const notified = result.data.notified;
+    if (notified?.channel === "whatsapp" && notified.ok) {
+      toast.success("Order delivered — WhatsApp sent to the client");
+    } else if (notified?.channel === "sms" && notified.ok) {
+      toast.success("Order delivered — SMS sent to the client");
+    } else {
+      toast.success("Order marked as delivered");
+      if (notified && !notified.ok) {
+        toast.error(notified.error ?? "Message couldn't be sent");
+      }
+      setPreparedMessage(completionMessage(order, clientName));
+    }
     router.refresh();
   }
 
+  async function copyPrepared() {
+    if (!preparedMessage) return;
+    try {
+      await navigator.clipboard.writeText(preparedMessage);
+      setCopied(true);
+      toast.success("Message copied — send it to the client");
+      setTimeout(() => setCopied(false), 2000);
+    } catch {
+      toast.error("Could not copy automatically");
+    }
+  }
+
   return (
-    <Button
-      variant="outline"
-      size="sm"
-      onClick={onClick}
-      disabled={pending || !isPaymentComplete}
-      title={!isPaymentComplete ? "Payment must be complete before marking as delivered" : undefined}
-    >
-      {pending ? <Loader2 className="size-4 animate-spin" /> : <CheckCircle2 className="size-4" />}
-      {isPaymentComplete ? "Mark delivered" : "Payment pending"}
-    </Button>
+    <>
+      <Button
+        variant="outline"
+        size="sm"
+        onClick={onClick}
+        disabled={pending || !isPaymentComplete}
+        title={!isPaymentComplete ? "Payment must be complete before marking as delivered" : undefined}
+      >
+        {pending ? <Loader2 className="size-4 animate-spin" /> : <CheckCircle2 className="size-4" />}
+        {isPaymentComplete ? "Mark delivered" : "Payment pending"}
+      </Button>
+      <Dialog open={preparedMessage !== null} onOpenChange={(v) => !v && setPreparedMessage(null)}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>Order delivered 🎉</DialogTitle>
+            <DialogDescription>
+              The message wasn't sent automatically — here it is to send to the
+              client yourself:
+            </DialogDescription>
+          </DialogHeader>
+          <div className="whitespace-pre-wrap rounded-lg border bg-muted/40 p-3 text-sm leading-relaxed">
+            {preparedMessage}
+          </div>
+          <DialogFooter>
+            <Button type="button" onClick={copyPrepared}>
+              {copied ? <CheckCircle2 className="size-4 text-green-600" /> : null}
+              {copied ? "Copied" : "Copy message"}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+    </>
   );
 }
 
@@ -69,16 +132,12 @@ function OrderCard({
   order,
   clientId,
   clientName,
-  clientMobile,
   gstNumber,
-  whatsappBusinessMobile,
 }: {
   order: OrderDetail;
   clientId?: string;
   clientName?: string;
-  clientMobile?: string;
   gstNumber?: string | null;
-  whatsappBusinessMobile?: string | null;
 }) {
   const isDelivered = order.status === "DELIVERED";
   const isCancelled = order.status === "CANCELLED";
@@ -179,21 +238,13 @@ function OrderCard({
           </dl>
           <div className="flex flex-wrap items-center gap-2">
             {gstNumber ? <p className="text-xs text-muted-foreground">GSTIN: {gstNumber}</p> : null}
-            {clientId ? (
-              <ShareProfileButton
-                clientId={clientId}
-                clientMobile={clientMobile}
-                clientName={clientName}
-                whatsappBusinessMobile={whatsappBusinessMobile}
-              />
-            ) : null}
             {order.expectedDelivery ? (
               <p className="text-sm text-muted-foreground">
                 Delivery: {format(new Date(order.expectedDelivery), "dd MMM yyyy")}
               </p>
             ) : null}
             {order.status !== "DELIVERED" && order.status !== "CANCELLED" ? (
-              <MarkDeliveredButton orderId={order.id} paymentStatus={order.paymentStatus} />
+              <MarkDeliveredButton order={order} clientName={clientName} />
             ) : null}
             {order.duePaise > 0 && clientId ? (
               <RecordPaymentDialog orderId={order.id} duePaise={order.duePaise} clientId={clientId} />
@@ -209,16 +260,12 @@ export function OrdersList({
   orders,
   clientId,
   clientName,
-  clientMobile,
   gstNumber,
-  whatsappBusinessMobile,
 }: {
   orders: OrderDetail[];
   clientId?: string;
   clientName?: string;
-  clientMobile?: string;
   gstNumber?: string | null;
-  whatsappBusinessMobile?: string | null;
 }) {
   if (orders.length === 0) {
     return (
@@ -235,9 +282,7 @@ export function OrdersList({
           order={order}
           clientId={clientId}
           clientName={clientName}
-          clientMobile={clientMobile}
           gstNumber={gstNumber}
-          whatsappBusinessMobile={whatsappBusinessMobile}
         />
       ))}
     </div>

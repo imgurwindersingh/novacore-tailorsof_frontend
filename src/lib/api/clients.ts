@@ -2,6 +2,7 @@ import type {
   ClientDetail,
   ClientListResult,
   CreateClientInput,
+  NotifyResult,
   PublicClientProfile,
   UpdateClientInput,
   WizardOrderInput,
@@ -37,11 +38,18 @@ export async function checkMobileRequest(
 /** POST /api/clients */
 export async function createClientRequest(
   input: CreateClientInput
-): Promise<{ clientId: string; orderId: string; orderNumber: string }> {
-  return apiFetch<{ clientId: string; orderId: string; orderNumber: string }>(
-    "/api/clients",
-    { method: "POST", body: input }
-  );
+): Promise<{
+  clientId: string;
+  orderId: string;
+  orderNumber: string;
+  notified?: NotifyResult;
+}> {
+  return apiFetch<{
+    clientId: string;
+    orderId: string;
+    orderNumber: string;
+    notified?: NotifyResult;
+  }>("/api/clients", { method: "POST", body: input });
 }
 
 /** PUT /api/clients/:id */
@@ -68,11 +76,18 @@ export async function deleteClientRequest(
 export async function createOrderForClientRequest(
   clientId: string,
   input: WizardOrderInput
-): Promise<{ orderId: string; orderNumber: string; clientId: string }> {
-  return apiFetch<{ orderId: string; orderNumber: string; clientId: string }>(
-    `/api/clients/${clientId}/orders`,
-    { method: "POST", body: input }
-  );
+): Promise<{
+  orderId: string;
+  orderNumber: string;
+  clientId: string;
+  notified?: NotifyResult;
+}> {
+  return apiFetch<{
+    orderId: string;
+    orderNumber: string;
+    clientId: string;
+    notified?: NotifyResult;
+  }>(`/api/clients/${clientId}/orders`, { method: "POST", body: input });
 }
 
 /** GET /api/public/clients/:id — no auth required */

@@ -57,7 +57,7 @@ export default async function PublicProfilePage({
             <div className="flex size-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
               <Scissors className="size-4" />
             </div>
-            <span className="font-semibold">Bluestar Tailors</span>
+            <span className="font-semibold">NovaCore Tailors</span>
           </div>
           <PublicRefreshButton />
         </div>
@@ -99,7 +99,7 @@ export default async function PublicProfilePage({
 
       {/* Footer */}
       <footer className="border-t py-6 text-center text-xs text-muted-foreground">
-        This is a read-only profile shared by Bluestar Tailors.
+        This is a read-only profile shared by NovaCore Tailors.
       </footer>
     </div>
   );

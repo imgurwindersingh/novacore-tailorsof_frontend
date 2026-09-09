@@ -32,14 +32,14 @@ export default async function LoginPage() {
         <CardHeader className="text-center">
           <Image
             src="/logo.png"
-            alt="Bluestar Tailors"
+            alt="NovaCore Tailors"
             width={52}
             height={52}
             style={{ width: "auto", height: "52px" }}
             className="mx-auto mb-2 object-contain"
             priority
           />
-          <CardTitle className="text-2xl">Bluestar Tailors</CardTitle>
+          <CardTitle className="text-2xl">NovaCore Tailors</CardTitle>
           <CardDescription>Sign in to manage your tailoring shop</CardDescription>
         </CardHeader>
         <CardContent>

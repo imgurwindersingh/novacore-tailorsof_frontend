@@ -19,6 +19,10 @@ export default async function SettingsPage() {
     gstNumber: null,
     defaultGarmentRates: {},
     deliveryPresets: [],
+    twilioConfigured: false,
+    whatsappEnabled: true,
+    twilioFromNumber: null,
+    twilioContentSid: null,
   };
 
   try {

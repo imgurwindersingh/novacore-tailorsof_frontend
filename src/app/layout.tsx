@@ -15,8 +15,8 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: "Bluestar Tailors",
-    template: "%s - Bluestar Tailors",
+    default: "NovaCore Tailors",
+    template: "%s - NovaCore Tailors",
   },
   description: "Tailoring shop management: clients, measurements, orders and payments",
 };

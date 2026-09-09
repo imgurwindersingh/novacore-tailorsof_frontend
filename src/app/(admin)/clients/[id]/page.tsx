@@ -72,10 +72,7 @@ export default async function ClientDetailPage({
           <TabsTrigger value="orders">Orders &amp; Payments</TabsTrigger>
         </TabsList>
         <TabsContent value="profile" className="mt-4">
-          <ProfileCard
-            client={client}
-            whatsappBusinessMobile={settings.whatsappBusinessMobile}
-          />
+          <ProfileCard client={client} />
         </TabsContent>
         <TabsContent value="measurements" className="mt-4 space-y-6">
           <MeasurementsCard client={client} />
@@ -86,9 +83,7 @@ export default async function ClientDetailPage({
             orders={client.orders}
             clientId={client.id}
             clientName={client.fullName}
-            clientMobile={client.mobile}
             gstNumber={settings.gstNumber}
-            whatsappBusinessMobile={settings.whatsappBusinessMobile}
           />
           <div>
             <h2 className="mb-3 text-lg font-semibold">Payment history</h2>

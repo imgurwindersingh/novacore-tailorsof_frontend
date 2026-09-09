@@ -64,11 +64,11 @@ function UserBlock({ user }: { user: SessionUser }) {
     <div className="flex items-center gap-3 border-t border-sidebar-border px-3 py-4">
       <Avatar className="size-9">
         <AvatarFallback className="bg-sidebar-primary text-sidebar-primary-foreground">
-          {initials("Bluestar Tailors")}
+          {initials("NovaCore Tailors")}
         </AvatarFallback>
       </Avatar>
       <div className="min-w-0 flex-1">
-        <p className="truncate text-sm font-medium text-sidebar-foreground">Bluestar Tailors</p>
+        <p className="truncate text-sm font-medium text-sidebar-foreground">NovaCore Tailors</p>
         <p className="truncate text-xs text-sidebar-foreground/60">{user.email}</p>
       </div>
       <form action={doLogout}>
@@ -85,7 +85,7 @@ function Brand() {
     <div className="flex items-center gap-2.5 border-b border-sidebar-border px-3 py-5">
       <Image
         src="/logo.png"
-        alt="Bluestar Tailors"
+        alt="NovaCore Tailors"
         width={36}
         height={36}
         style={{ width: "auto", height: "36px" }}
@@ -94,7 +94,7 @@ function Brand() {
       />
       <div className="min-w-0 leading-tight">
         <span className="block truncate text-lg font-semibold tracking-tight text-sidebar-foreground">
-          Bluestar Tailors
+          NovaCore Tailors
         </span>
         <span className="block truncate text-[11px] font-medium uppercase tracking-[0.18em] text-sidebar-foreground/50">
           Atelier
@@ -122,14 +122,14 @@ export function Sidebar({ user }: { user: SessionUser }) {
         <div className="flex items-center gap-2">
           <Image
             src="/logo.png"
-            alt="Bluestar Tailors"
+            alt="NovaCore Tailors"
             width={32}
             height={32}
             style={{ width: "auto", height: "32px" }}
             className="shrink-0 object-contain"
             priority
           />
-          <span className="font-semibold text-sidebar-foreground">Bluestar Tailors</span>
+          <span className="font-semibold text-sidebar-foreground">NovaCore Tailors</span>
         </div>
         <Sheet open={open} onOpenChange={setOpen}>
           <SheetTrigger render={<Button variant="ghost" size="icon" aria-label="Open menu" className="text-sidebar-foreground/80" />}>

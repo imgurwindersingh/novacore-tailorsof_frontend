@@ -20,7 +20,13 @@ function apiErr<T = never>(e: unknown): ServiceResult<T> {
 
 export async function markOrderDeliveredAction(
   orderId: string
-): Promise<ServiceResult<{ orderId: string; clientId: string }>> {
+): Promise<
+  ServiceResult<{
+    orderId: string;
+    clientId: string;
+    notified?: import("../types").NotifyResult;
+  }>
+> {
   try {
     const data = await markOrderDeliveredRequest(orderId);
     revalidatePath(`/clients/${data.clientId}`);

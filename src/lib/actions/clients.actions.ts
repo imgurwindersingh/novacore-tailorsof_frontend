@@ -34,7 +34,13 @@ export async function checkMobileExistsAction(
 
 export async function createClientWithOrderAction(
   input: CreateClientInput
-): Promise<ServiceResult<{ clientId: string; orderNumber: string }>> {
+): Promise<
+  ServiceResult<{
+    clientId: string;
+    orderNumber: string;
+    notified?: import("../types").NotifyResult;
+  }>
+> {
   try {
     const data = await createClientRequest(input);
     revalidatePath("/clients");
